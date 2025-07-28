@@ -5,7 +5,9 @@
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_main.h"
+#include <cassert>
 #include <cstdint>
 #include <iostream>
+#include <vector>
 
 #endif
