@@ -31,7 +31,6 @@ CMakeUserPresets.json
 
 .cache
 .build
-.clang-format
 .clangd
 .zed
 build

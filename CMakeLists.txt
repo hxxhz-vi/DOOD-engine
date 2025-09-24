@@ -7,11 +7,7 @@ file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "OFF")
 
-if (MSVC)
-    add_compile_options(/W4)
-else()
-  add_compile_options(-Wall -Wextra -Wpedantic -g -lSDL2)
-endif()
+add_compile_options(-Wall -Wextra -Wpedantic -g -lSDL2)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
