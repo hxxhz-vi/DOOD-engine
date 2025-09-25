@@ -1,8 +1,12 @@
-#include "config.hpp"
+#include "config.hpp" // IWYU pragma: keep
 
 constexpr int SCREEN_WIDTH{1024};
 constexpr int SCREEN_HEIGHT{512};
 
+/**
+ * @brief
+ *
+ */
 struct AppState {
   SDL_Window *window{nullptr};
   SDL_Surface *surface{nullptr};
@@ -10,20 +14,43 @@ struct AppState {
   SDL_Texture *texture{nullptr};
 };
 
+/**
+ * @brief
+ *
+ */
 struct Player {
-  long double player_x = 3.456;
-  long double player_y = 2.456;
-  long double player_angle = 5.8;
+  float player_x = 3.456;
+  float player_y = 2.456;
+  float player_angle = 4.8;
   const float player_fov = M_PI / 3;
-  int player_size = 5;
+  int player_size = 15;
   float move_speed = 0.1;
   float turn_speed = 0.05;
 };
 
+/**
+ * @brief
+ *
+ * @param r
+ * @param g
+ * @param b
+ * @param a
+ * @return uint32_t
+ */
 uint32_t pack_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
   return (a << 24) | (b << 16) | (g << 8) | r;
 }
 
+/**
+ * @brief
+ *
+ * @param img
+ * @param x
+ * @param y
+ * @param w
+ * @param h
+ * @param color
+ */
 void draw_rectangle(std::vector<uint32_t> &img, const size_t x, const size_t y,
                     const size_t w, const size_t h, const size_t color) {
   assert(img.size() == SCREEN_WIDTH * SCREEN_HEIGHT);
@@ -38,6 +65,11 @@ void draw_rectangle(std::vector<uint32_t> &img, const size_t x, const size_t y,
     }
 }
 
+/**
+ * @brief
+ *
+ * @return int32_t
+ */
 int32_t main(void) {
   AppState app;
   Player pl;
@@ -47,25 +79,34 @@ int32_t main(void) {
 
   std::vector<uint32_t> framebuf(win_w * win_h, pack_color(255, 255, 255, 255));
 
-  const size_t map_w = 16;
-  const size_t map_h = 16;
+  const size_t map_w = 24;
+  const size_t map_h = 24;
 
-  const char map[] = "0000222222220000"
-                     "1    1         0"
-                     "1         111110"
-                     "1    1    2    0"
-                     "0         2    0"
-                     "011   2   1    0"
-                     "0     1        0"
-                     "0     1        0"
-                     "0     1        0"
-                     "0     1   111110"
-                     "0              0"
-                     "0              0"
-                     "2       11111110"
-                     "0              0"
-                     "0              0"
-                     "0002222222200000";
+  int map[map_w][map_h] = {
+      {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 4, 0, 0, 0, 0, 5, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 4, 0, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+      {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cout << "SDL init video error!\n" << SDL_GetError();
@@ -110,6 +151,14 @@ int32_t main(void) {
             if (SDLK_a == e.key.keysym.sym) {
               pl.player_angle -= pl.turn_speed;
             }
+
+            // int px = static_cast<int>(pl.player_x);
+            // int py = static_cast<int>(pl.player_y);
+
+            // if (map[py][px] != 0) {
+            //   pl.player_x -= pl.move_speed * cos(pl.player_angle);
+            //   pl.player_y -= pl.move_speed * sin(pl.player_angle);
+            //}
           }
         }
 
@@ -126,7 +175,7 @@ int32_t main(void) {
 
         for (size_t my = 0; my < map_h; ++my) {
           for (size_t mx = 0; mx < map_w; ++mx) {
-            if (map[my * map_w + mx] == ' ')
+            if (map[my][mx] == 0)
               continue;
 
             size_t rect_x = mx * rect_w;
@@ -166,15 +215,26 @@ int32_t main(void) {
               framebuf[px + py * win_w] = pack_color(
                   160, 160, 160, 160); // this draws the visibility cone
 
-            if (map[int(cx) + int(cy) * map_w] !=
-                ' ') { // our ray touches a wall, so draw the vertical column to
-              // create an illusion of 3D
-              size_t column_height = win_h / t;
+            int mx = int(cx);
+            int my = int(cy);
 
-              draw_rectangle(framebuf, win_w / 2 + i,
-                             win_h / 2 - column_height / 2, 1, column_height,
-                             pack_color(255, 0, 255, 255));
-              break;
+            if (mx >= 0 && mx < static_cast<int>(map_w) && my >= 0 &&
+                my < static_cast<int>(map_h)) {
+              if (map[int(cy)][int(cx)] != 0) { // our ray touches a wall, so
+                                                // draw the vertical column to
+                // create an illusion of 3D
+                size_t column_height = win_h / (t > 0.05f ? t : 0.05f);
+
+                int col_x = win_w / 2 + i;
+                int col_y = win_h / 2 - column_height / 2;
+
+                if (col_x >= 0 && col_x < win_w && col_y >= 0 &&
+                    col_y < win_h) {
+                  draw_rectangle(framebuf, col_x, col_y, 1, column_height,
+                                 pack_color(255, 0, 255, 255));
+                }
+                break;
+              }
             }
           }
         }

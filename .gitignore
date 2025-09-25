@@ -29,6 +29,7 @@ CMakeUserPresets.json
 
 # other
 
+.vscode
 .cache
 .build
 .clangd
